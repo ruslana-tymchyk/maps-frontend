@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .main-grid {
   display: grid;
   grid-template-columns: 60% 40%;
@@ -5,3 +9,90 @@
   background: lightgray; /* helps visualize */
   height: 100vh;
 }
+
+/* Responsive grid */
+/* TODO: check if this greater than syntax is supported in Safari */
+@media (width >= 768px) {
+  .container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width >= 1024px) {
+  .container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+/* 
+.journal-entry {
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  background-color: white;
+  transition: box-shadow 0.3s ease;
+}
+
+.journal-entry:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.info-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-container .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.country {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background-color: #eff6ff;
+  color: #1d4ed8;
+  border-radius: 9999px;
+}
+
+.info-container a {
+  font-size: 0.875rem;
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.info-container a:hover {
+  color: #1e40af;
+  text-decoration: underline;
+}
+
+.entry-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+  margin-top: 0.75rem;
+}
+
+.entry-author {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin: 0.125rem 0;
+}
+
+.entry-year {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin: 0.125rem 0;
+}
+
+.entry-rating {
+  font-size: 0.875rem;
+  color: #f59e0b;
+  font-weight: 500;
+  margin-top: 0.5rem;
+} */
