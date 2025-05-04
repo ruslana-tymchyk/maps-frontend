@@ -53,11 +53,12 @@ export default function MapComponent(){
           // "France" : [48.01381248943335, 4.452891442451406] 
           // "Vanuatu": [-20.190838772294295, 169.8157726679621]
           "New Zealand" : [-5.88375763943448, 133.0768850469291],
-          "Papua New Guinea": [-5.946631388408483, 143.75052550448433],
-          "New Caledonia" : [-22.36150647365175, 166.1812173019432],
-          "Solomon Islands": [-11.64816832810912, 160.26036543494405],
+          "Papua New Guinea": [-5.946631388408483, 133.75052550448433],
+          "New Caledonia" : [-17.36150647365175, 129.1812173019432],
+          "Solomon Islands": [-11.64816832810912, 140.26036543494405],
           "France" : [48.01381248943335, 4.452891442451406],
-          "Vanuatu": [-20.190838772294295, 169.8157726679621]
+          "Vanuatu": [-20.190838772294295, 130.8157726679621],
+          "Marshall Islands": [-20.190838772294295, 130.8157726679621]
         }
 
         // selected country
@@ -88,7 +89,6 @@ export default function MapComponent(){
           country.bindPopup(popUpContent, popupOptions).openPopup()
 
         }
-
 
       //   // Example: show a popup with feature info
       //   country.bindPopup(`<div>
