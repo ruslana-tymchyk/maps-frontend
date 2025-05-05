@@ -4,6 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import geojsonData from '../sources/countries.json';
 import L from 'leaflet';  // for Leaflet objects like Point 
 
+
 const SetMapConstraints = () => {
     const map = useMap();
 

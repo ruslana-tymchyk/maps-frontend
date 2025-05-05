@@ -1,4 +1,12 @@
-export default function Entry(props){
+import {EntryType} from '../types/entry';
+import React from 'react';
+
+interface EntryProps {
+    entry: EntryType;
+}
+
+// Entry is a functional component (FC) that expects props in a format EntryProps
+const Entry: React.FC<EntryProps> = (props) => {
     return(
     <article className="p-4 mb-3 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 bg-white">
             <div className="flex flex-col">
@@ -31,5 +39,7 @@ export default function Entry(props){
                     {props.entry.rating}
                 </p>
             </div>
-    </article>)
-}
+    </article>);
+};
+
+export default Entry;
