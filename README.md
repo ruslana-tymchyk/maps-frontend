@@ -11,7 +11,7 @@ Powered by GPT-4o and enriched with book metadata (title, author, publication ye
 ## ✨ Features
 
 - 🔍 **Natural Language Book Search** via GPT-4o
-- 🗺️ **Interactive Map** showcasing books from different locations/genres
+- 🗺️ **Interactive Map** showcasing books from different locations
 - 📚 **Detailed List View** with:
   - Title
   - Author
@@ -29,9 +29,48 @@ Powered by GPT-4o and enriched with book metadata (title, author, publication ye
 |----------|---------|----|
 | React (TypeScript) | Flask (Python) | ChatGPT-4o |
 
- <!--
+
 ---
 
+## 📷 Example Output
+
+> **Query:** “fiction books about dogs”
+
+**Results:**
+- 📍 **Seattle, USA**
+  - 📘 *The Art of Racing in the Rain* by Garth Stein (2008)  
+    ⭐ Goodreads: [4.2](https://www.goodreads.com/book/show/The_Art_of_Racing_in_the_Rain)
+
+- 📍 **Dublin, Ireland**
+  - 📘 *Dog Stars* by Peter Heller (2012)  
+    ⭐ Goodreads: [3.9](https://www.goodreads.com/book/show/13154853-the-dog-stars)
+
+- 📍 **London, UK**
+  - 📘 *Flush: A Biography* by Virginia Woolf (1933)  
+    ⭐ Goodreads: [3.7](https://www.goodreads.com/book/show/2619.Flush)
+
+_Results shown on both an interactive map and detailed list view._
+
+---
+
+## 🗺️ Roadmap
+
+- [x] MVP: Natural language search for 3 countries + list results
+- [x] Display book metadata in a list (title, author, year, rating, link)
+- [x] Integrate ChatGPT-4o for intelligent parsing
+- [ ] Display book metadata in a map
+- [ ] Natural Language Search for 100+ countries 
+- [ ] Filters to allow search by region or selected countries
+- [ ] Improved interaction with ChatBot i.e. including suggested next steps
+---
+
+## 👤 Author
+
+Built with ❤️ by [Lana Tymchyk]
+
+- 💼 [LinkedIn](https://linkedin.com/in/tymchyk)
+
+ <!--
 ## 🚀 Getting Started
 
 ### 🔧 Installation
@@ -44,8 +83,9 @@ cd geos
 # Install frontend dependencies
 cd frontend
 npm install
--->
+
 
 # Install backend dependencies
 cd ../backend
 pip install -r requirements.txt
+-->
