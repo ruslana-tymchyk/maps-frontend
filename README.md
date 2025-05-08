@@ -1,8 +1,8 @@
-# 🗺️ GEOS — Geographical Book Search Engine
+# 🗺️ GeoS — Geographical Book Search Engine
 
-**GEOS** is an intelligent geographical search engine that lets users ask natural-language queries (e.g. _"fiction books about dogs"_) and discover example books from various genres — displayed both on an interactive map and as a detailed list.
+**GeoS** is an intelligent geographical search engine that lets users ask natural-language queries (e.g. _"fiction books about dogs"_) and discover example books from various genres — displayed both on an interactive map and as a detailed list.
 
-Powered by GPT-4o and enriched with book metadata (title, author, publication year, Goodreads info), GEOS makes literary discovery visual, intuitive, and fun.
+Powered by GPT-4o and enriched with book metadata (title, author, publication year, Goodreads info), GeoS makes literary discovery visual, intuitive, and fun.
 
  <!--![GEOS Banner](https://your-image-link.com/banner.png) Optional banner -->
 
