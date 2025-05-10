@@ -1,16 +1,23 @@
 import { MapContainer, TileLayer, GeoJSON, useMap} from 'react-leaflet';
 import { useEffect } from 'react';
 import 'leaflet/dist/leaflet.css';
-import geojsonData from '../sources/countries.json';
+import geoJsonData from '../sources/countries.json';
 import L from 'leaflet';  // for Leaflet objects like Point 
+import { LatLngBoundsLiteral, LeafletMouseEvent } from 'leaflet';
+import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
+import { Layer } from 'leaflet';
 
+// Using 'as' does not actually perform type checking - this is like telling TS that I deffo know the type. Be careful and try to change this later.
+const typedGeoJsonData = geoJsonData as FeatureCollection<Geometry, GeoJsonProperties>;
+
+// const typeGeoJsonData: FeatureCollection<Geometry, GeoJsonProperties> = geoJsonData;
 
 const SetMapConstraints = () => {
     const map = useMap();
 
     useEffect(() => {
       // Set strict bounds
-      const bounds = [[-90, -180], [90, 180]];
+      const bounds: LatLngBoundsLiteral = [[-90, -180], [90, 180]];
       
       // Ensure the map stays within bounds and prevent wrapping
       map.setMaxBounds(bounds)
@@ -44,9 +51,18 @@ const SetMapConstraints = () => {
 export default function MapComponent(){
 
 
-    const highlightSelected = (e) => {
+    const highlightSelected = (e: LeafletMouseEvent) => {
 
-        const popUpPositions = {
+        type Country =
+            | "New Zealand"
+            | "Papua New Guinea"
+            | "New Caledonia"
+            | "Solomon Islands"
+            | "France"
+            | "Vanuatu"
+            | "Marshall Islands";
+
+        const popUpPositions: Record<Country, [number,number]> = {
           // "New Zealand" : [-50.88375763943448, 166.0768850469291],
           // "Papua New Guinea": [-5.946631388408483, 143.75052550448433],
           // "New Caledonia" : [-22.36150647365175, 166.1812173019432],
@@ -63,32 +79,27 @@ export default function MapComponent(){
         }
 
         // selected country
-        const country = e.target;
-        const countryName = country.feature.properties.name
+        const layer = e.target;
+        const countryName = layer.feature.properties.name as Country;
 
         // Returns true if popup needs to be fixed for this country
-        const toFixPopup = popUpPositions.hasOwnProperty(countryName)
+        const toFixPopup = countryName in popUpPositions;
 
         const popUpContent = `<div>
-            <strong>${country.feature.properties.name}</strong><br/>
+            <strong>${countryName}</strong><br/>
               <p>I want to travel here</p>
         </div>`
 
+        const popupOptions = {
+          autoPan: true, 
+          autoPanPadding: new L.Point(50,50)
+        };
+
         if (toFixPopup){
-          const popupOptions = {
-            autoPan: true, 
-            autoPanPadding: new L.Point(50,50)
-          }
-          country.bindPopup(popUpContent, popupOptions).openPopup(popUpPositions[countryName])
+          layer.bindPopup(popUpContent, popupOptions).openPopup(popUpPositions[countryName])
         }
         else {
-
-          const popupOptions = {
-            autoPan: true, 
-            autoPanPadding: new L.Point(50,50)
-          }
-          country.bindPopup(popUpContent, popupOptions).openPopup()
-
+          layer.bindPopup(popUpContent, popupOptions).openPopup()
         }
 
       //   // Example: show a popup with feature info
@@ -110,7 +121,7 @@ export default function MapComponent(){
 
       //   console.log(country._popup._latlng.lng)
         // change borders of selected country to grey
-        country.setStyle({
+        layer.setStyle({
           weight: 3,
           color: '#008aa5',
           dashArray: '',
@@ -118,17 +129,17 @@ export default function MapComponent(){
           fillOpacity: 0.3
         })
       
-        country.bringToFront();  
+        layer.bringToFront();  
       
       }
       
       
-      const resetHighlight = (e) => {
+      const resetHighlight = (e: LeafletMouseEvent) => {
           // selected country
-          const country = e.target;
+          const layer = e.target;
       
           // change borders of selected country back to blue
-          country.setStyle({
+          layer.setStyle({
             weight: 2,
             color: '#00b4d8',
             dashArray: '1',
@@ -142,7 +153,7 @@ export default function MapComponent(){
       //   map.fitBounds(e.target.getBounds())
       // }
       
-      const onEachFeature = (feature, layer) => {
+      const onEachFeature = (feature : Feature, layer: Layer) => {
         layer.on({
           mouseover:highlightSelected,
           mouseout: resetHighlight,
@@ -158,7 +169,6 @@ export default function MapComponent(){
            zoom={2} 
            scrollWheelZoom={true} 
            style={{ height: '100%', width: '100%'}}
-           noWrap={true}
            minZoom={2}
            maxZoom={8}
            bounceAtZoomLimits={false}
@@ -175,7 +185,7 @@ export default function MapComponent(){
           />
 
           <GeoJSON attribution="&copy; geo-countries from Github.com" 
-                   data={geojsonData} 
+                   data={typedGeoJsonData} 
                    style={{fillColor: 'white',
                           weight: 2,
                           opacity: 1,
