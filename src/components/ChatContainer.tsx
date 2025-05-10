@@ -1,61 +1,37 @@
 import MessageComponent from "./MessageComponent"
-import {useEffect, useRef, useState} from 'react'
+import { useEffect, useRef } from 'react';
+
+// Message type definition
+export type Message = {
+    index: number;
+    sender: string;
+    text: string;
+  };
 
 type ChatProps = {
     //specifying that it is a function that accepts boolean as an argument
-    onStateChange : (value: boolean) => void,
+    onSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
+    messages: Message[];
+    isLoading?: boolean;
+    responseSummary?: string;
 }
 
-export default function ChatContainer({onStateChange} : ChatProps){
 
-    const messagesSetup = [{ index: 1, 
-        sender: 'bot',
-        text: 'Hi! I am GeoS - your geographical search engine. Tell me the kinds of books that you like i.e. genres, authors etc. And I will show similar books for each country in the world!' },
-       {index: 2, 
-        sender: 'user', 
-        text: ''
-       }]
-
-    const [messages, setMessages] = useState<{index: number;
-                                              sender: string;
-                                              text:string;}[]>(messagesSetup)
-
-    useEffect(() => {
-        if (messages.length !== messagesSetup.length) {
-            onStateChange(true)
-        }
-    }, [messages])
-
-
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault()
-        const form = event.target as HTMLFormElement;
-        const input = (form.elements[0] as HTMLInputElement)?.value;
-        const sender = (form.elements[1] as HTMLInputElement)?.value;
-        if (!input) return
-
-        const newMessage = {
-            index: messages.length + 1,
-            sender: sender,
-            text: input
-        }
-        setMessages(prev => [...prev, newMessage])
-        form.reset()
-    }
+export default function ChatContainer({onSubmit, messages, isLoading, responseSummary} : ChatProps){
 
     const messagesEndRef = useRef<HTMLDivElement>(null) // Specify the type of element (HTMLDivElement)
     const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({behavior: 'smooth'})
+        messagesEndRef.current?.scrollIntoView({behavior: 'smooth', block: 'end'})
     }
-
+  
     useEffect(() => {scrollToBottom()}, [messages])
 
     return (
-        <div className="flex flex-col h-60 bg-gray-100 overflow-auto">
+        <div className="flex flex-col h-96 overflow-y-auto">
             {/* Input area and input form */}
             <div className="border-b border-gray-300 p-4 bg-white sticky top-0 z-10">
                 <form className="flex items-center gap-2"
-                      onSubmit={handleSubmit}> 
+                      onSubmit={onSubmit}> 
                     <input type="text"
                             placeholder="Type your message..."
                             className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -71,7 +47,7 @@ export default function ChatContainer({onStateChange} : ChatProps){
             </div>
             <div className="flex-1 overflow-y-auto p-4 space-y-4 h-full">
                 {messages.map((message) => (
-                    <MessageComponent key={message.index} message={message.text}/>)
+                    <MessageComponent key={message.index} sender={message.sender} message={message.text}/>)
                 )}
 
                 {/* Invisible div to scroll to when new messages come in */}
