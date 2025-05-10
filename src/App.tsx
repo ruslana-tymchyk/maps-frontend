@@ -158,7 +158,9 @@ function App() {
           <div className='h-screen'>
               <Header></Header>
               <div className="grid grid-rows-[80%_20%] grid-cols-[60%_40%] h-[90%] pl-2">
-                  <MapComponent/>
+                  <MapComponent 
+                        responseData={responseData.json_response}
+                        showEntries={showEntries}/>
                   <div>
                       {tabs.map((tab) => (
                         <button key={tab.id}
