@@ -1,11 +1,13 @@
 import { MapContainer, TileLayer, GeoJSON, useMap} from 'react-leaflet';
-import { useEffect } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import 'leaflet/dist/leaflet.css';
 import geoJsonData from '../sources/countries.json';
 import L from 'leaflet';  // for Leaflet objects like Point 
 import { LatLngBoundsLiteral, LeafletMouseEvent } from 'leaflet';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
 import { Layer } from 'leaflet';
+
+import {EntryType} from '../types/entry';
 
 // Using 'as' does not actually perform type checking - this is like telling TS that I deffo know the type. Be careful and try to change this later.
 const typedGeoJsonData = geoJsonData as FeatureCollection<Geometry, GeoJsonProperties>;
@@ -48,27 +50,28 @@ const SetMapConstraints = () => {
     return null;
   };
 
-export default function MapComponent(){
+interface MapComponentProps {
+    responseData: any;
+    showEntries: boolean;
+  }
+
+export default function MapComponent({ responseData, showEntries }: MapComponentProps ){
+    
+    const parsedResponseData = JSON.parse(responseData)
+    const [geoJsonKey, setGeoJsonKey] = useState<number>(0);
+
+     // Effect to update GeoJSON when showEntries or responseData changes
+    useEffect(() => {
+      // Increment the key to force GeoJSON component to re-render
+      setGeoJsonKey(prevKey => prevKey + 1);
+    }, [showEntries, responseData]);
 
 
-    const highlightSelected = (e: LeafletMouseEvent) => {
+// Create memoized event handlers to capture the latest showEntries and responseData values
+    const eventHandlers = useMemo(() => {
+      const highlightSelected = (e: LeafletMouseEvent) => {
 
-        type Country =
-            | "New Zealand"
-            | "Papua New Guinea"
-            | "New Caledonia"
-            | "Solomon Islands"
-            | "France"
-            | "Vanuatu"
-            | "Marshall Islands";
-
-        const popUpPositions: Record<Country, [number,number]> = {
-          // "New Zealand" : [-50.88375763943448, 166.0768850469291],
-          // "Papua New Guinea": [-5.946631388408483, 143.75052550448433],
-          // "New Caledonia" : [-22.36150647365175, 166.1812173019432],
-          // "Solomon Islands": [-11.64816832810912, lng: 160.26036543494405],
-          // "France" : [48.01381248943335, 4.452891442451406] 
-          // "Vanuatu": [-20.190838772294295, 169.8157726679621]
+        const popUpPositions: Record<string, [number,number]> = {
           "New Zealand" : [-5.88375763943448, 133.0768850469291],
           "Papua New Guinea": [-5.946631388408483, 133.75052550448433],
           "New Caledonia" : [-17.36150647365175, 129.1812173019432],
@@ -80,15 +83,51 @@ export default function MapComponent(){
 
         // selected country
         const layer = e.target;
-        const countryName = layer.feature.properties.name as Country;
+        // const countryName = layer.feature.properties.name as Country;
+        const countryName: string = String(layer.feature.properties.name);
 
         // Returns true if popup needs to be fixed for this country
         const toFixPopup = countryName in popUpPositions;
 
-        const popUpContent = `<div>
-            <strong>${countryName}</strong><br/>
-              <p>I want to travel here</p>
-        </div>`
+        // Create different popup content based on showEntries and responseData
+        let popUpContent = `<div class='w-24'>
+              <strong>${countryName}</strong><br/>
+              <p>Ask for book recommendations in a 
+                  Chat to display entries.</p>
+            </div>`;
+        
+        if (showEntries && parsedResponseData) {
+          // Try to find country data in responseData
+           const countryData = parsedResponseData?.countries?.find(
+            (entry:EntryType) => entry.country_id === countryName
+           );
+                              
+          if (countryData) {
+            // Create rich popup content using the responseData
+              popUpContent = `
+                <div class="bg-white rounded-xl p-4 w-72 space-y-2 text-sm text-gray-700">
+                  <h2 class="text-lg font-semibold text-gray-900">${countryName}</h2>
+                  <div class="border-t border-gray-200 pt-2 space-y-1">
+                    <div><span class="font-medium">Author:</span> ${countryData.author}</div>
+                    <div><span class="font-medium">Title:</span> ${countryData.title}</div>
+                    <div><span class="font-medium">Year:</span> ${countryData.year}</div>
+                    <div><span class="font-medium">Rating:</span> ${countryData.rating}</div>
+                    <div>
+                      <a href="${countryData.goodreads_url}" target="_blank" class="text-blue-600 hover:underline">
+                        View on Goodreads
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              `;
+          } else {
+            // Fallback content when country exists in responseData but has no specific data
+            popUpContent = `<div>
+              <strong>${countryName}</strong><br/>
+              <p>No data available for this country</p>
+            </div>`;
+          }
+        } 
 
         const popupOptions = {
           autoPan: true, 
@@ -102,24 +141,6 @@ export default function MapComponent(){
           layer.bindPopup(popUpContent, popupOptions).openPopup()
         }
 
-      //   // Example: show a popup with feature info
-      //   country.bindPopup(`<div>
-      //       <strong>${country.feature.properties.name}</strong><br/>
-      //         <p>I want to travel here</p>
-      //   </div>`, {
-      //     //Offset the popup to appear more to the left for problematic coutries
-      //     offset: country.feature.properties.name === "New Zealand" || 
-      //             country.feature.properties.name === "Papua New Guinea" || 
-      //             country.feature.properties.name === "New Caledonia" ||
-      //             country.feature.properties.name === "Solomon Islands"
-      //     ? new L.Point(-50, 0)
-      //     : new L.Point(0,0),
-      //   autoPan: true,
-      //   autoPanPadding: new L.Point(50,50)
-      //   }
-      //  ).openPopup();
-
-      //   console.log(country._popup._latlng.lng)
         // change borders of selected country to grey
         layer.setStyle({
           weight: 3,
@@ -130,9 +151,7 @@ export default function MapComponent(){
         })
       
         layer.bringToFront();  
-      
-      }
-      
+      };
       
       const resetHighlight = (e: LeafletMouseEvent) => {
           // selected country
@@ -146,20 +165,23 @@ export default function MapComponent(){
             fillOpacity: 0.1,
             fillColor: 'white'
           })
+      };
+      
+      return {
+        highlightSelected,
+        resetHighlight
+      };
+    }, [showEntries, responseData]); // Re-create handlers when these values change
 
-      }
-      
-      // function zoomToFeature(e){
-      //   map.fitBounds(e.target.getBounds())
-      // }
-      
-      const onEachFeature = (feature : Feature, layer: Layer) => {
-        layer.on({
-          mouseover:highlightSelected,
-          mouseout: resetHighlight,
-          // click: zoomToFeature
-        })
-      }
+  // Create a memoized onEachFeature function that uses the latest eventHandlers
+      const onEachFeature = useMemo(() => {
+        return (feature: Feature, layer: Layer) => {
+          layer.on({
+            mouseover: eventHandlers.highlightSelected,
+            mouseout: eventHandlers.resetHighlight,
+          });
+        };
+      }, [eventHandlers]);
 
 
     return (
@@ -192,8 +214,13 @@ export default function MapComponent(){
                           color: '#00b4d8',
                           dashArray: '1',
                           fillOpacity: 0.1}}
-                onEachFeature={onEachFeature}>
+                onEachFeature={onEachFeature}
+                key = {geoJsonKey}>
             </GeoJSON>
         </MapContainer>
       );
 }
+
+// TODO: 
+// When showEnties changes - reinitialise GeoJSON such that it uses the latest response data & there shows counties
+// Does showEntries have to be passed down?
