@@ -21,7 +21,7 @@ export default function EntriesComponent({responseData}: any) {
       })
 
     return(
-        <main className="border-x-4 border-y-4 border-white h-3/5 overflow-auto transition-all duration-500 ease-out opacity-100 translate-y-0">
+        <main className="border-x-4 border-y-4 border-white h-full overflow-auto transition-all duration-500 ease-out opacity-100 translate-y-0">
         {entryElements}
         </main>
     )
