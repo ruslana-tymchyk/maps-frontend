@@ -72,13 +72,16 @@ export default function MapComponent({ responseData, showEntries }: MapComponent
       const highlightSelected = (e: LeafletMouseEvent) => {
 
         const popUpPositions: Record<string, [number,number]> = {
-          "New Zealand" : [-5.88375763943448, 133.0768850469291],
-          "Papua New Guinea": [-5.946631388408483, 133.75052550448433],
-          "New Caledonia" : [-17.36150647365175, 129.1812173019432],
-          "Solomon Islands": [-11.64816832810912, 140.26036543494405],
+          "New Zealand" : [-35.88375763943448, 166.0768850469291],
+          // "Papua New Guinea": [-10, 130],
+          // "New Caledonia" : [-17.36150647365175, 129.1812173019432],
+          // "Solomon Islands": [-11.64816832810912, 130],
           "France" : [48.01381248943335, 4.452891442451406],
-          "Vanuatu": [-20.190838772294295, 130.8157726679621],
-          "Marshall Islands": [-20.190838772294295, 130.8157726679621]
+          // "Vanuatu": [-20.190838772294295, 130.8157726679621],
+          // "Marshall Islands": [-20.190838772294295, 130.8157726679621],
+          // "Kiribati": [-5.88375763943448, 133.0768850469291],
+          "Greenland" : [70.0768850469291, -45.88375763943448],
+          // "Australia": [-27, 127]
         }
 
         // selected country
@@ -90,7 +93,7 @@ export default function MapComponent({ responseData, showEntries }: MapComponent
         const toFixPopup = countryName in popUpPositions;
 
         // Create different popup content based on showEntries and responseData
-        let popUpContent = `<div class='w-24'>
+        let popUpContent = `<div class='w-40'>
               <strong>${countryName}</strong><br/>
               <p>Ask for book recommendations in a 
                   Chat to display entries.</p>
@@ -130,7 +133,7 @@ export default function MapComponent({ responseData, showEntries }: MapComponent
         } 
 
         const popupOptions = {
-          autoPan: true, 
+          autoPan: false, 
           autoPanPadding: new L.Point(50,50)
         };
 

@@ -166,7 +166,7 @@ function App() {
                   <div>
                       {tabs.map((tab) => (
                         <button key={tab.id}
-                                className = {`px-4 py-2 font-semibold ${activeTab === tab.id ? 'border-b-2 border-blue-500 text-blue-500' : 'text-grey-500 hover:text-blue-500'}`} 
+                                className = {`px-4 py-2 font-semibold ${activeTab === tab.id ? 'border-b-2 border-darkerblue text-darkerblue' : 'text-grey-500 hover:text-darkerblue'}`} 
                                 onClick={() => setActiveTab(tab.id)}>
                                 {tab.label}
                                 </button>
