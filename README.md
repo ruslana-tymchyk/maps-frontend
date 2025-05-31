@@ -81,8 +81,10 @@ git clone https://github.com/yourusername/geos.git
 cd geos
 
 # Install frontend dependencies
-cd frontend
 npm install
+# Run frontend
+npm start
+If VSCode is stuck: rm -rf node_modules package-lock.json
 
 
 # Install backend dependencies

@@ -6,6 +6,8 @@ import EntriesComponent from './components/EntriesComponent'
 import { useEffect, useState } from 'react';
 import { ReactNode } from 'react';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000/api/chat';
+
 function App() {
   // nice fix to make sure page always starts on top after a refresh
   useEffect(() => {
@@ -74,7 +76,7 @@ function App() {
       //Call ChatGPT and get a response
 
       try{
-          const response: Response = await fetch('http://127.0.0.1:5000/api/chat', {
+          const response: Response = await fetch(API_URL, {
               method: 'POST',
               headers: {
                   'Content-Type' : 'application/json'
