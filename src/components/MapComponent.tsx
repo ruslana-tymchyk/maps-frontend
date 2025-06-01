@@ -108,16 +108,17 @@ export default function MapComponent({ responseData, showEntries }: MapComponent
           if (countryData) {
             // Create rich popup content using the responseData
               popUpContent = `
-                <div class="bg-white rounded-xl p-4 w-72 space-y-2 text-sm text-gray-700">
+               <div class="bg-white rounded-xl p-4 max-w-lg space-y-2 text-sm text-gray-700">
                   <h2 class="text-lg font-semibold text-gray-900">${countryName}</h2>
                   <div class="border-t border-gray-200 pt-2 space-y-1">
                     <div><span class="font-medium">Author:</span> ${countryData.author}</div>
                     <div><span class="font-medium">Title:</span> ${countryData.title}</div>
                     <div><span class="font-medium">Year:</span> ${countryData.year}</div>
                     <div><span class="font-medium">Rating:</span> ${countryData.rating}</div>
-                    <div>
-                      <a href="${countryData.goodreads_url}" target="_blank" class="text-blue-600 hover:underline">
-                        View on Goodreads
+                    <div><span class="font-medium">Book summary:</span> ${countryData.book_summary}</div>
+                                        <div>
+                      <a href="${countryData.google_url}" target="_blank" class="text-darkerblue hover:underline">
+                        View on Google
                       </a>
                     </div>
                   </div>

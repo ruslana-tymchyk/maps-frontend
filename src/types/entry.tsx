@@ -6,7 +6,8 @@ export interface EntryType {
     year: number;
     rating: number;
     created_at: string;
-    goodreads_url: string;
+    google_url: string;
+    book_summary: string;
     // add more specific fields instead of [key: string]: any
   }
   

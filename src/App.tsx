@@ -136,7 +136,7 @@ function App() {
     const [activeTab, setActiveTab] = useState<tabKey>("tab1")
   
     const TabContent: TabContentMap = {
-      tab1: ( <div className="col-span-2 flex-col justify-end overflow-auto">
+      tab1: ( <div className="flex-col justify-end">
         <ChatContainer 
               onSubmit={handleChatSubmit}
               messages={messages}
@@ -146,9 +146,9 @@ function App() {
       </div>), 
       tab2: (<div>
         {showEntries && responseData.json_response ?
-        (<EntriesComponent
+        (<div> <EntriesComponent
                responseData={responseData.json_response}
-               />) : <div className="flex flex-col items-center justify-center h-full p-8 text-center rounded-lg">
+               /> </div>) : <div className="flex flex-col items-center justify-center h-full p-8 text-center rounded-lg">
                     {/* Icon */}
                     <div className="mb-4">
                       <svg className="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -191,20 +191,31 @@ return (
     {/* Main Content Section */}
     <div className='flex flex-col'>
       <Header></Header>
-      {/* <div className="grid grid-rows-[1fr_auto] grid-cols-[60%_40%] h-[90%] pl-2"> */}
       <div className="grid grid-rows-[600px] grid-cols-[60%_40%] pl-2">
         <MapComponent
           responseData={responseData.json_response}
           showEntries={showEntries}/>
-        <div>
-          {tabs.map((tab) => (
-            <button key={tab.id}
-              className={`px-4 py-2 font-semibold ${activeTab === tab.id ? 'border-b-2 border-darkerblue text-darkerblue' : 'text-grey-500 hover:text-darkerblue'}`}
-              onClick={() => setActiveTab(tab.id)}>
-              {tab.label}
-            </button>
-          ))}
-          <div>{TabContent[activeTab]}</div>
+          <div className="h-full flex flex-col">
+          {/* Fixed tab buttons */}
+            <div className="flex-shrink-0 border-b">
+              {tabs.map((tab) => (
+                <button 
+                  key={tab.id}
+                  className={`px-4 py-2 font-semibold ${
+                    activeTab === tab.id 
+                      ? 'border-b-2 border-darkerblue text-darkerblue' 
+                      : 'text-grey-500 hover:text-darkerblue'
+                  }`}
+                  onClick={() => setActiveTab(tab.id)}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+        {/* Scrollable content area */}
+        <div className="flex-1 overflow-auto">
+          {TabContent[activeTab]}
+        </div>
         </div>
       </div>
     </div>
@@ -212,7 +223,7 @@ return (
     {/* Project Info Section */}
     <div className='bg-gray-50 p-8 border-t border-gray-200'>
       <div className='max-w-8xl'>
-        <h2 className='text-3xl font-bold text-darkerblue mb-6'>About This Project</h2>
+        <h2 className='text-3xl font-bold text-evendarkerblue mb-6'>About This Project</h2>
         
         <div className='grid md:grid-cols-2 gap-12'>
           {/* Description */}

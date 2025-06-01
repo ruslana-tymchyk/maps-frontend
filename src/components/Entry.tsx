@@ -10,18 +10,18 @@ const Entry: React.FC<EntryProps> = (props) => {
   return (
     <article className="p-6 mb-4 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 bg-white hover:border-gray-300">
       <div className="flex flex-col space-y-4">
-        {/* Header with country and Goodreads link */}
+        {/* Header with country and Google link */}
         <div className="flex justify-between items-start">
-          <span className="px-3 py-1 text-xs font-medium bg-blue-50 text-blue-700 rounded-full border border-blue-100">
+          <span className="px-3 py-1 text-xs font-medium bg-blue-50 text-darkerblue rounded-full border border-blue-100">
             {props.entry.country_id}
           </span>
           <a
-            href={props.entry.goodreads_url}
+            href={props.entry.google_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 transition-colors duration-200 group"
+            className="flex items-center gap-1 text-sm text-darkerblue hover:text-evendarkerblue transition-colors duration-200 group"
           >
-            <span className="group-hover:underline">View on Goodreads</span>
+            <span className="group-hover:underline">View on Google</span>
             <svg className="w-3 h-3 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
@@ -63,6 +63,11 @@ const Entry: React.FC<EntryProps> = (props) => {
             {props.entry.rating}
           </span>
         </div>
+        {/* Book summary */}
+      <div className="flex items-center gap-3 text-sm text-gray-600">
+            <span className="font-medium">{props.entry.book_summary}</span>
+            <span className="w-1 h-1 bg-gray-400 rounded-full"></span>
+          </div>
       </div>
     </article>
   );
