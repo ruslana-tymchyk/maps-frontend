@@ -2,7 +2,7 @@ export default function Header(){
     return(
     <header className="bg-white text-white p-4 shadow-md">
         <div className="flex">
-            <div className="text-4xl font-sans text-darkerblue tracking-wide pl-4">
+            <div className="text-4xl font-semibold text-evendarkerblue tracking-wide pl-4">
                 GeoS
             </div>
             {/* <div className="ml-auto flex gap-x-4">

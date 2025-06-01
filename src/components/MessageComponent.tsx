@@ -8,7 +8,7 @@ export default function MessageComponent({message, sender} : MessageProps){
 
     const messageStyles = 
         sender === 'user'
-        ? "ml-auto bg-blue-500 text-white rounded-br-none"
+        ? "ml-auto bg-evendarkerblue text-white rounded-br-none"
         : "mr-auto bg-gray-100 text-gray-800 rounded-bl-none"
     return(
         <div className={`${commonStyles} ${messageStyles}`}>
